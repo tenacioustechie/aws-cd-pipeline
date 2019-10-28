@@ -14,15 +14,18 @@ phases:
       - echo Installing npm packages...
       - cd cdk
       - npm i
+      - cd ..
       - echo Running compile from typscript to javascript...
       - npm run build
-      - cd ../src/aws-cd-pipeline/
+      - cd src/aws-cd-pipeline/
       - dotnet build
+      - cd ../..
   post_build:
     commands:
       - echo Publishing lambda packages...
-      - cd ../src/aws-cd-pipeline/
+      - cd src/aws-cd-pipeline/
       - dotnet lambda package
+      - cd ..
       - echo Build completed on `date`
 #  pre_deploy:
 #    commands:
