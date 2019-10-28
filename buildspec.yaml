@@ -6,17 +6,20 @@ phases:
       nodejs: 10
   pre_build:
     commands:
-      - echo Nothing to do in the pre_build phase...
-      - echo Just some echo statements to show the phase is working...
+      - echo Checking for dotnet cli...
+      - dotnet --version
+      - echo Installing AWS Tools...
+      - dotnet tool install -g Amazon.Lambda.Tools
+      - echo Done
   build:
     commands:
       - echo Build started on `date`
       - echo Installing npm packages...
       - cd cdk
       - npm i
-      - cd ..
-      - echo Running compile from typscript to javascript...
       - npm run build
+      - cd ..
+      - echo "Building project app..."
       - cd src/aws-cd-pipeline/
       - dotnet build
       - cd ../..
