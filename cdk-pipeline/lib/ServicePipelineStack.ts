@@ -26,7 +26,7 @@ export class ServicePipeline extends Construct {
     });
     const build = new codebuild.Project(this, props.serviceName + '-Build', {
       source: gitHubSource,
-      
+      projectName: props.serviceName + '-Build'
     });
 
     // const pipeline = new codepipeline.Pipeline(this, 'MyFirstPipeline', {

@@ -18,13 +18,11 @@ phases:
       - npm run build
       - cd ../src/aws-cd-pipeline/
       - dotnet build
-  publish:
+  post_build:
     commands:
       - echo Publishing lambda packages...
       - cd ../src/aws-cd-pipeline/
       - dotnet lambda package
-  post_build:
-    commands:
       - echo Build completed on `date`
 #  pre_deploy:
 #    commands:
