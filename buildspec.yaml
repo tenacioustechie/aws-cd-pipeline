@@ -1,0 +1,37 @@
+version: 0.2
+
+phases:
+  install:
+    runtime-versions:
+      nodejs: 10
+  pre_build:
+    commands:
+      - echo Nothing to do in the pre_build phase...
+      - echo Just some echo statements to show the phase is working...
+  build:
+    commands:
+      - echo Build started on `date`
+      - echo Installing npm packages...
+      - cd cdk
+      - npm i
+      - echo Running compile from typscript to javascript...
+      - npm run build
+      - cd ../src/aws-cd-pipeline/
+      - dotnet build
+  publish:
+    commands:
+      - echo Publishing lambda packages...
+      - cd ../src/aws-cd-pipeline/
+      - dotnet lambda package
+  post_build:
+    commands:
+      - echo Build completed on `date`
+#  pre_deploy:
+#    commands:
+#      - cdk diff
+#  deploy:
+#    commands:
+#      - cdk deploy
+#artifacts:
+#  files:
+#    - target/messageUtil-1.0.jar
