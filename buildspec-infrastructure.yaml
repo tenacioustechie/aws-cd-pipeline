@@ -1,0 +1,35 @@
+version: 0.2
+
+phases:
+  install:
+    runtime-versions:
+      nodejs: 10
+  pre_build:
+    commands:
+      - echo Done
+  build:
+    commands:
+      - echo Build started on `date`
+      - echo Installing npm packages...
+      - cd src/cdk
+      - npm i
+      - npm run build
+      - npm run cdk synth -- -o dist
+      - cd ../..
+  post_build:
+    commands:
+      - echo Publishing lambda packages...
+      - cd src/aws-cd-pipeline/
+      - dotnet lambda package
+      - cd ..
+      - echo Build completed on `date`
+#  pre_deploy:
+#    commands:
+#      - cdk diff
+#  deploy:
+#    commands:
+#      - cdk deploy
+artifacts:
+  base-directory: cdk/dist
+  files:
+    - cdk-stack.template.json
