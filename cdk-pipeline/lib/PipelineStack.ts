@@ -1,14 +1,10 @@
-import { App, Construct, Stack, StackProps, SecretValue } from '@aws-cdk/core';
-import lambda = require('@aws-cdk/aws-lambda');
-import secretsmanager = require('@aws-cdk/aws-secretsmanager');
-// import { SecretValue } from '@aws-cdk/aws-lambda';
-import s3 = require('@aws-cdk/aws-s3');
 import codebuild = require('@aws-cdk/aws-codebuild');
 import codepipeline = require('@aws-cdk/aws-codepipeline');
 import codepipeline_actions = require('@aws-cdk/aws-codepipeline-actions');
-import codedeploy = require('@aws-cdk/aws-codedeploy');
-import { Artifact } from '@aws-cdk/aws-codepipeline';
-import { GitHubSourceAction } from '@aws-cdk/aws-codepipeline-actions';
+import lambda = require('@aws-cdk/aws-lambda');
+import s3 = require('@aws-cdk/aws-s3');
+import { App, Stack, StackProps, SecretValue } from '@aws-cdk/core';
+import secretsmanager = require('@aws-cdk/aws-secretsmanager');
 
 export interface PipelineStackProps extends StackProps {
   githubOwner: string;
@@ -19,8 +15,8 @@ export interface PipelineStackProps extends StackProps {
 }
 
 export class PipelineStack extends Stack {
-  constructor(scope: Construct, id: string, props: PipelineStackProps) {
-    super(scope, id);
+  constructor(app: App, id: string, props: PipelineStackProps) {
+    super(app, id);
 
     const bucket = new s3.Bucket(this, id + '-artefacts');
 
