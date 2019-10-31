@@ -3,12 +3,14 @@ import codepipeline = require('@aws-cdk/aws-codepipeline');
 import codepipeline_actions = require('@aws-cdk/aws-codepipeline-actions');
 import lambda = require('@aws-cdk/aws-lambda');
 import s3 = require('@aws-cdk/aws-s3');
-import { App, Stack, StackProps, SecretValue } from '@aws-cdk/core';
+import { App, Stack, StackProps } from '@aws-cdk/core';
 import secretsmanager = require('@aws-cdk/aws-secretsmanager');
+//import { Secret } from '@aws-cdk/aws-ecs';
 
 export interface PipelineStackProps extends StackProps {
   githubOwner: string;
   githubRepo: string;
+  githubOauthSecret: secretsmanager.ISecret;
   //githubTokenSsmPath: string;
   // Not sure we need this, its from: https://docs.aws.amazon.com/cdk/latest/guide/codepipeline_example.html#codepipeline_example_stack
   //readonly lambdaCode: lambda.CfnParametersCode;
@@ -18,7 +20,12 @@ export class PipelineStack extends Stack {
   constructor(app: App, id: string, props: PipelineStackProps) {
     super(app, id);
 
-    const bucket = new s3.Bucket(this, id + '-artefacts');
+    const bucketArtefacts = new s3.Bucket(this, id + '-artefacts', {
+      versioned: true
+    });
+    const bucketPackages = new s3.Bucket(this, id + '-packages', {
+      versioned: true
+    });
 
     // TODO: if you go into Codebuild console
     //     - start adding a project
@@ -32,21 +39,17 @@ export class PipelineStack extends Stack {
     // });
 
     // TODO: check we need these
-    // const secretGithubOAuthToken = new secretsmanager.Secret(this, 'githubOAuthToken', {
-    //   description: 'OAuth token used to access GitHub for Repository Component ' + props.serviceName
-    // });
-    const secretGithubOAuthToken = new secretsmanager.Secret.fromSecretArn(this, 'githubOAuthToken', '');
     const sourceOutput = new codepipeline.Artifact();
     const buildOutputApplication = new codepipeline.Artifact('BuildOutputApplication');
     const buildOutputInfrastructure = new codepipeline.Artifact('BuildOutputInfrastructure');
 
-    const oauth = SecretValue.secretsManager('my-github-token'); 
     const githubSourcePiepline = new codepipeline_actions.GitHubSourceAction( {
       actionName: 'GitHub-Source',
       runOrder: 1,
       owner: props.githubOwner + '/' + props.githubRepo,
       repo: props.githubRepo,
-      oauthToken: secretGithubOAuthToken.secretValue,
+      oauthToken: props.githubOauthSecret.secretValue, 
+      // secretGithubOAuthToken.secretValue,
       //oauthToken: oauth, // gitHubSource, //  cdk.SecretParameter.SecretParameter('mygithubtoken'),
       branch: 'master',
       trigger: codepipeline_actions.GitHubTrigger.WEBHOOK,

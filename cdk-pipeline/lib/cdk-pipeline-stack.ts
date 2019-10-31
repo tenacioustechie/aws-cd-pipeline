@@ -3,20 +3,28 @@ import s3 = require('@aws-cdk/aws-s3');
 import { App } from '@aws-cdk/core';
 import { PipelineStack } from './PipelineStack';
 
-export class CdkPipelineStack extends cdk.Stack {
-  constructor(scope: cdk.Construct, id: string, props?: cdk.StackProps) {
-    super(scope, id, props);
+// export class CdkPipelineStack extends cdk.Stack {
+//   constructor(scope: cdk.Construct, id: string, props?: cdk.StackProps) {
+//     super(scope, id, props);
 
-    // The code that defines your stack goes here
+//     // The code that defines your stack goes here
 
-    new PipelineStack( this, "CdPipelineStack", {
-      githubOwner: 'tenacioustechie',
-      githubRepo: 'aws-cd-pipeline',
-      stackName: 'CdPipelineStack'
-    });
+//     // const secretGithubOAuthToken = new secretsmanager.Secret(this, 'githubOAuthToken', {
+//     //   description: 'OAuth token used to access GitHub for Repository Component ' + props.serviceName
+//     // });
+//     //const secretGithubOAuthToken = new secretsmanager.Secret.fromSecretArn(this, 'githubOAuthToken', '');
+//     // const secret = new secretsmanager.Secret(this, 'githubOAuthToken');
+//     // const secret = Secret.fromSecretsManager({secretArn: 'insertARNlater'})
+//     const oauth = SecretValue.secretsManager('my-github-token'); 
 
-    const bucket = new s3.Bucket(this, id + '-packages', {
-      versioned: true
-    });
-  }
-}
+//     new PipelineStack( this, "CdPipelineStack", {
+//       githubOwner: 'tenacioustechie',
+//       githubRepo: 'aws-cd-pipeline',
+//       stackName: 'CdPipelineStack'
+//     });
+
+//     const bucket = new s3.Bucket(this, id + '-packages', {
+//       versioned: true
+//     });
+//   }
+// }
