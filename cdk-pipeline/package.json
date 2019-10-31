@@ -22,7 +22,9 @@
   "dependencies": {
     "@aws-cdk/aws-codebuild": "^1.14.0",
     "@aws-cdk/aws-codedeploy": "^1.14.0",
-    "@aws-cdk/aws-codepipeline": "^1.14.0",
+    "@aws-cdk/aws-codepipeline": "^1.15.0",
+    "@aws-cdk/aws-codepipeline-actions": "^1.15.0",
+    "@aws-cdk/aws-lambda": "^1.15.0",
     "@aws-cdk/aws-s3": "^1.14.0",
     "@aws-cdk/core": "^1.14.0",
     "source-map-support": "^0.5.9"
