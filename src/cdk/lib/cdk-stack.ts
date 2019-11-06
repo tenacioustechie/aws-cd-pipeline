@@ -12,7 +12,7 @@ export class CdkStack extends cdk.Stack {
 
     const CdPipelineAppFunction = new lambda.Function(this, 'CdPipelineApp', {
       runtime: lambda.Runtime.DOTNET_CORE_2_1, // execution environment
-      code: lambda.Code.asset('..\\src\\aws-cd-pipeline\\bin\\Release\\netcoreapp2.1\\aws-cd-pipeline.zip'),
+      code: lambda.Code.asset('..\\aws-cd-pipeline\\bin\\Release\\netcoreapp2.1\\aws-cd-pipeline.zip'),
       handler: 'aws-cd-pipeline::aws_cd_pipeline.LambdaEntryPoint::FunctionHandlerAsync',
       timeout: Duration.seconds(30)
     });
